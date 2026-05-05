@@ -32,7 +32,9 @@ void NetworkItemStackDescriptor::write(BinaryStream& stream) const {
         _SCULK_READ(stream.readUnsignedShort(mStackSize));
         _SCULK_READ(stream.readUnsignedVarInt(mAux));
         _SCULK_READ(stream.readOptional(mNetId, &ReadOnlyBinaryStream::readVarInt));
-        _SCULK_READ(stream.readVarInt(mBlockRuntimeId));
+        int blockRuntimeId{};
+        _SCULK_READ(stream.readVarInt(blockRuntimeId));
+        mBlockRuntimeId = static_cast<std::uint32_t>(blockRuntimeId);
         return stream.readString(mUserData);
     }
 }
@@ -42,7 +44,7 @@ void NetworkItemStackDescriptor::writeCereal(BinaryStream& stream) const {
     stream.writeUnsignedShort(mStackSize);
     stream.writeUnsignedVarInt(mAux);
     stream.writeOptional(mNetId, &BinaryStream::writeVarInt);
-    stream.writeVarInt(mBlockRuntimeId);
+    stream.writeUnsignedVarInt(mBlockRuntimeId);
     stream.writeString(mUserData);
 }
 
@@ -51,7 +53,7 @@ void NetworkItemStackDescriptor::writeCereal(BinaryStream& stream) const {
     _SCULK_READ(stream.readUnsignedShort(mStackSize));
     _SCULK_READ(stream.readUnsignedVarInt(mAux));
     _SCULK_READ(stream.readOptional(mNetId, &ReadOnlyBinaryStream::readVarInt));
-    _SCULK_READ(stream.readVarInt(mBlockRuntimeId));
+    _SCULK_READ(stream.readUnsignedVarInt(mBlockRuntimeId));
     return stream.readString(mUserData);
 }
 

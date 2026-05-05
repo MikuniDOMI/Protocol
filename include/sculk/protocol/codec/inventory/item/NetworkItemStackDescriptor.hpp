@@ -17,7 +17,7 @@ struct NetworkItemStackDescriptor {
     std::uint16_t      mStackSize{};
     std::uint32_t      mAux{};
     std::optional<int> mNetId{};
-    int                mBlockRuntimeId{};
+    std::uint32_t      mBlockRuntimeId{};
     std::string        mUserData{};
 
     void write(BinaryStream& stream) const;
