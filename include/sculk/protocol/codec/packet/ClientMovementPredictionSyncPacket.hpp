@@ -21,6 +21,13 @@ public:
         float mJumpStrength{};
         float mHealth{};
         float mHunger{};
+        float mUnknown1{};
+        float mUnknown2{};
+        float mUnknown3{};
+
+        void write(BinaryStream& stream) const override;
+
+        [[nodiscard]] Result<> read(ReadOnlyBinaryStream& stream) override;
     };
 
 public:

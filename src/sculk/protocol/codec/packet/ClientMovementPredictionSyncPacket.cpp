@@ -16,15 +16,34 @@ std::string_view ClientMovementPredictionSyncPacket::getName() const noexcept {
     return "ClientMovementPredictionSyncPacket";
 }
 
+void ClientMovementPredictionSyncPacket::MovementAttributesComponent::write(BinaryStream& stream) const {
+    stream.writeFloat(mMovementSpeed);
+    stream.writeFloat(mUnderwaterMovementSpeed);
+    stream.writeFloat(mLavaMovementSpeed);
+    stream.writeFloat(mJumpStrength);
+    stream.writeFloat(mHealth);
+    stream.writeFloat(mHunger);
+    stream.writeFloat(mUnknown1);
+    stream.writeFloat(mUnknown2);
+    stream.writeFloat(mUnknown3);
+}
+
+Result<> ClientMovementPredictionSyncPacket::MovementAttributesComponent::read(ReadOnlyBinaryStream& stream) {
+    _SCULK_READ(stream.readFloat(mMovementSpeed));
+    _SCULK_READ(stream.readFloat(mUnderwaterMovementSpeed));
+    _SCULK_READ(stream.readFloat(mLavaMovementSpeed));
+    _SCULK_READ(stream.readFloat(mJumpStrength));
+    _SCULK_READ(stream.readFloat(mHealth));
+    _SCULK_READ(stream.readFloat(mHunger));
+    _SCULK_READ(stream.readFloat(mUnknown1));
+    _SCULK_READ(stream.readFloat(mUnknown2));
+    return stream.readFloat(mUnknown3);
+}
+
 void ClientMovementPredictionSyncPacket::write(BinaryStream& stream) const {
     stream.writeBitset(mActorFlags);
     mActorBoundingBox.write(stream);
-    stream.writeFloat(mMovementAttributes.mMovementSpeed);
-    stream.writeFloat(mMovementAttributes.mUnderwaterMovementSpeed);
-    stream.writeFloat(mMovementAttributes.mLavaMovementSpeed);
-    stream.writeFloat(mMovementAttributes.mJumpStrength);
-    stream.writeFloat(mMovementAttributes.mHealth);
-    stream.writeFloat(mMovementAttributes.mHunger);
+    mMovementAttributes.write(stream);
     stream.writeVarInt64(mActorID);
     stream.writeBool(mFlying);
 }
@@ -32,12 +51,7 @@ void ClientMovementPredictionSyncPacket::write(BinaryStream& stream) const {
 Result<> ClientMovementPredictionSyncPacket::read(ReadOnlyBinaryStream& stream) {
     _SCULK_READ(stream.readBitset(mActorFlags));
     _SCULK_READ(mActorBoundingBox.read(stream));
-    _SCULK_READ(stream.readFloat(mMovementAttributes.mMovementSpeed));
-    _SCULK_READ(stream.readFloat(mMovementAttributes.mUnderwaterMovementSpeed));
-    _SCULK_READ(stream.readFloat(mMovementAttributes.mLavaMovementSpeed));
-    _SCULK_READ(stream.readFloat(mMovementAttributes.mJumpStrength));
-    _SCULK_READ(stream.readFloat(mMovementAttributes.mHealth));
-    _SCULK_READ(stream.readFloat(mMovementAttributes.mHunger));
+    _SCULK_READ(mMovementAttributes.read(stream));
     _SCULK_READ(stream.readVarInt64(mActorID));
     return stream.readBool(mFlying);
 }

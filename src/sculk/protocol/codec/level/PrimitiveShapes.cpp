@@ -21,7 +21,7 @@ void PrimitiveShapes::write(BinaryStream& stream) const {
     stream.writeOptional(mMaxRenderDistance, &BinaryStream::writeFloat);
     stream.writeOptional(mColor, &BinaryStream::writeSignedInt);
     stream.writeOptional(mDimensionId, &BinaryStream::writeVarInt);
-    stream.writeOptional(mAttachedToEntityId, &BinaryStream::writeUnsignedVarInt64);
+    stream.writeOptional(mAttachedToEntityId, &BinaryStream::writeVarInt64);
     stream.writeVariantIndex<std::uint32_t>(mShape, &BinaryStream::writeUnsignedVarInt);
     std::visit(
         Overload{
@@ -60,7 +60,7 @@ Result<> PrimitiveShapes::read(ReadOnlyBinaryStream& stream) {
     _SCULK_READ(stream.readOptional(mMaxRenderDistance, &ReadOnlyBinaryStream::readFloat));
     _SCULK_READ(stream.readOptional(mColor, &ReadOnlyBinaryStream::readSignedInt));
     _SCULK_READ(stream.readOptional(mDimensionId, &ReadOnlyBinaryStream::readVarInt));
-    _SCULK_READ(stream.readOptional(mAttachedToEntityId, &ReadOnlyBinaryStream::readUnsignedVarInt64));
+    _SCULK_READ(stream.readOptional(mAttachedToEntityId, &ReadOnlyBinaryStream::readVarInt64));
     _SCULK_READ(stream.readVariantIndex<std::uint32_t>(mShape, &ReadOnlyBinaryStream::readUnsignedVarInt));
     return std::visit(
         Overload{
