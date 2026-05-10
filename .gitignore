@@ -46,6 +46,7 @@
 /build-msvc/
 /build-gcc/
 /docs/
+/out/
 
 # IDE files
 .vscode/
